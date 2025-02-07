@@ -35,8 +35,8 @@ export default function HeaderNav({
         <p className="font-bold text-inherit">ACME</p>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        {nav.map(({ name }) => (
-          <NavbarItem>
+        {nav.map(({ name }, index) => (
+          <NavbarItem key={index}>
             <Link color="foreground" href="#">
               {name}
             </Link>
