@@ -5,9 +5,9 @@ import { Accordion, AccordionItem } from "@heroui/react";
 export default function Acc({
   promise,
 }: {
-  promise: Usable<Record<string, any>[]>;
+  promise: Usable<Record<string, string>[]>;
 }) {
-  const data: Record<string, any>[] = use(promise);
+  const data: Record<string, string>[] = use(promise);
   console.log(data, "11");
   return (
     <Accordion variant="shadow" isCompact>
