@@ -8,5 +8,12 @@ const getData = async () => {
   console.log(posts);
   return posts;
 };
-
-export { getData };
+const getHeaderNav = async () => {
+  const sql: NeonQueryFunction<false, false> = neon(
+    `${process.env.DATABASE_URL}`
+  );
+  const headerNav = await sql("SELECT name FROM headernav ");
+  console.log(headerNav);
+  return headerNav;
+};
+export { getData, getHeaderNav };
