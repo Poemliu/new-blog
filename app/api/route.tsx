@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  return NextResponse.json("hello js");
+  return NextResponse.json([{ title: "111", id: 1 }]);
 }

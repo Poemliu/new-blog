@@ -6,9 +6,15 @@ import {
   NavbarItem,
   Link,
   Button,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
 } from "@heroui/react";
 import { Usable, use } from "react";
-
+import { customerTheme } from "../store/store";
+import useStore from "../store/store";
+const dropDownItems: customerTheme[] = ["light", "dark", "system"];
 export const AcmeLogo = () => {
   return (
     <svg fill="none" height="36" viewBox="0 0 32 32" width="36">
@@ -27,7 +33,9 @@ export default function HeaderNav({
 }: {
   getNav: Usable<Record<string, string>[]>;
 }) {
-  const nav = use(getNav);
+  const handleThemeButtonClick = () => {};
+  const setTheme = useStore.use.setTheme();
+  const navItems = use(getNav);
   return (
     <Navbar>
       <NavbarBrand>
@@ -35,10 +43,10 @@ export default function HeaderNav({
         <p className="font-bold text-inherit">ACME</p>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        {nav.map(({ name }, index) => (
-          <NavbarItem key={index}>
-            <Link color="foreground" href="#">
-              {name}
+        {navItems.map(({ title, link }) => (
+          <NavbarItem key={title}>
+            <Link color="foreground" href={`/${link}`}>
+              {title}
             </Link>
           </NavbarItem>
         ))}
@@ -51,6 +59,34 @@ export default function HeaderNav({
           <Button as={Link} color="primary" href="#" variant="flat">
             Sign Up
           </Button>
+        </NavbarItem>
+        <NavbarItem>
+          <Dropdown>
+            <DropdownTrigger>
+              <Button variant="flat" onPress={handleThemeButtonClick}>
+                theme
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu>
+              {dropDownItems.map((item) => (
+                <DropdownItem
+                  key={item}
+                  onPress={() => {
+                    const theme =
+                      item === "system"
+                        ? window.matchMedia("prefers-color-scheme:dark").matches
+                          ? "dark"
+                          : "light"
+                        : item;
+                    localStorage.setItem("local-theme", theme);
+                    setTheme(theme);
+                  }}
+                >
+                  {item}
+                </DropdownItem>
+              ))}
+            </DropdownMenu>
+          </Dropdown>
         </NavbarItem>
       </NavbarContent>
     </Navbar>

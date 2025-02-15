@@ -3,8 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./provider";
 import { Suspense } from "react";
+import Loading from "./ui/loading";
+import { getHeaderNav, preload } from "./action/action";
 import HeaderNav from "./ui/headerNav";
-import { getHeaderNav } from "./action/action";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,16 +27,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  preload(getHeaderNav);
+
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<Loading />}>
             <HeaderNav getNav={getHeaderNav()}></HeaderNav>
           </Suspense>
-          {children}
+          <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
         </Providers>
       </body>
     </html>
